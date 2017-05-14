@@ -1,0 +1,152 @@
+Lab 8 Report
+Maria Beatriz Zanardo
+
+  The program uses different implementations for a map. The map.h is the header file 
+for the map library and it contains the the declaration for all classes used by map.
+The map class is the parent class, from which all other classes inherit. The map class 
+also contains the virtual functions insert, search and dump, which are consequently 
+part of all other classes. Each class has its own implemmentatio of these funcions.
+The map.h file also contains the definitions of types (like DumpFlag, which is is 
+used by the  dump functions) and structures (like the Node structure, which is the 
+basis for the map and all other classes). The constants.cpp file is used to define 
+the NONE constant (indicates that a search  has failed), which is also included in 
+the map.h file.
+  The treap class contains the insert, search and dump functions, in addtion to
+other functions like getMaxTreeHeight, getMinTreeHeight and preOrderTraversal.
+The insert function uses a helper function called insert_treap. This function
+first checks whether the node to be inserted is equal to the null pointer (i.e
+the map is empty or the function has reached the end of the tree). 
+If that is the case, the function returns a new node which is given a random 
+priority. This is done using a random number generator called get_random(). If the 
+node is not equal to the nullptr, the insert_treap function then goes on to find 
+the appropriate place to insert the node. This is done by traversing through the 
+nodes and comparing the keys. If the key of the node to be inserted is smaller than 
+the key of the current node, the function then moves to the left node by calling the 
+insert_treap function recursively (but with node->left as the first argument, 
+instead of just node). The function then checks if the next node's priority (in this 
+case the left node) is greater than the previous node priority. If this is the case, 
+the function then calls the RotateRight function, which balances the tree. The same 
+process is done if the key of the node to be inserted is greater than the key of the 
+current node, but the function then recursively moves to the right subtree, and the 
+tree is balanced by using the RotateLeft function (only if the right node priority is 
+greater than the previous node's priority). If the key of the node to be inserted is 
+the same as the key of the current node being visited, the node's value is simply
+updated. 
+  The search function works by using a helper function called search_treap. This function
+works similarly to the insert_treap funcion, in that it recursively traverses through the
+nodes, comparing the nodes keys and moving to the right or left subtree dependig on 
+whether the key is greater or smaller than the key of the node being compared. If the
+function finds a node with a key that matches the key passed to the function, it returns
+that node. If the function reaches the nullptr (i.e. it traverses all nodes and doesn't
+find the given node), it returns the nullptr.
+  The dump function also uses a helper function called dump_treap. This function works the
+same way as the other classes' dump function. It first traverses through the right subtree
+(recursively) and outputs the node's information based on the DumpFlag passed to the 
+function (done using a switch statement). The same is then done to the left subtree (also
+recursively). The function only returns when it reaches the nullptr (i.e. end of tree).
+  The getMaxTreeHeight uses a helper function called max_height. This function recursively
+traverses through the left and right subtrees and stores their heights as integers 
+left_height and right_height). It then returns the highest of these two numbers, plus one
+(to include the root node).
+  The getMinTreeHeight works almost exactly the same as the getMaxTreeHeight but the helper
+function (min_height) returns the smallest value between left_height and right_height
+(plus one).
+  The preOrderTraversal function uses a helper function called traversal. The traversal
+function recursively traverses through all nodes (until reaching the nullptr). It first
+outputs the current node, then traverses through the left subtree, then the right subtree,
+This way, it outputs first the root, then the left child and lastly the right child.
+
+
+Testbench results:
+
+Testing BST Map (Correctness)...
+Testing BST Map (Memory)...
+Testing Treap Map (Correctness)...
+-- Trial 1 --
+Map Balance ratio for 100 entries is: 0.285714 with min height: 4 and max height: 14
+Treap of size 10, pre-order traversal : 1
+0
+9
+5
+4
+2
+3
+8
+7
+6
+-- Trial 2 --
+Map Balance ratio for 100 entries is: 0.4 with min height: 4 and max height: 10
+Treap of size 10, pre-order traversal : 3
+2
+0
+1
+5
+4
+9
+7
+6
+8
+-- Trial 3 --
+Map Balance ratio for 100 entries is: 0.25 with min height: 3 and max height: 12
+Treap of size 10, pre-order traversal : 4
+1
+0
+2
+3
+6
+5
+8
+7
+9
+-- Trial 4 --
+Map Balance ratio for 100 entries is: 0.285714 with min height: 4 and max height: 14
+Treap of size 10, pre-order traversal : 5
+0
+1
+4
+2
+3
+9
+8
+7
+6
+-- Trial 5 --
+Map Balance ratio for 100 entries is: 0.1875 with min height: 3 and max height: 16
+Treap of size 10, pre-order traversal : 0
+8
+7
+3
+1
+2
+6
+5
+4
+9
+
+Testing Treap Map (Memory)...
+g++ -g -gdwarf-2 -Wall -std=gnu++11 -o map_bench.o -c map_bench.cpp
+g++  -o map_bench map_bench.o libmap.a
+Benchmarking for n = 30,000 ...
+== Unsorted ==
+Insert: 32.496 s
+Search: 31.171 s
+== Sorted == 
+Insert: 41.82 s
+Search: 0.062852 s
+== BST == 
+Insert: 34.492 s
+Search: 30.068 s
+== RBTree == 
+Insert: 0.070271 s
+Search: 0.044047 s
+== Treap == 
+Insert: 31.943 s
+Search: 30.945 s
+
+
+  From these testench results, we can see that the RBTree is the most efficient data
+structure for searching and inserting. The sorted class also has a good time for
+searching, but it is significantly slower in inserting. The treap has results similar
+to the BST. However, since the treap is probabilistically balanced, its results vary
+in each trial, meaning, it can have better or worse times than those shown in the
+testbench results above.
