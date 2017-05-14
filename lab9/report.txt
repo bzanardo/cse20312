@@ -1,0 +1,61 @@
+Maria Beatriz Zanardo
+Lab 9 Report
+
+  From the user's perspective, the program accepts input in the following format:
+
+NEDGES
+SRC1 DST1
+...
+NPATHS
+SRC1 DST1
+...
+
+where the paths under NEDGES represent the edges of the graph and the paths under NPATHS
+are the paths that are to be searched for and determined whether they exist or not in the
+given graph. After receiving input, the program determines whether the given paths exist
+and outputs the result.
+
+  From the programmer's perspective, the program uses typedef to create the Graph object,
+which is a map that has a string as a key and a vector of strings as the value (this 
+corresponds to an adjancy list type of graph representation). An array of 20 graphs is 
+used to store std input (the size of the array was chosen arbitrarily, assuming that no 
+more than 10 graphs would be inputed at once). To receive and store the input, the getline 
+function is used continuously (in a while loop, until cin.eof). In each iteration of the 
+while loop, the first line is stored in the num_s variable, which is then converted to an 
+integer using the stoi function (unless num_s is an empty line). The num variable corresponds
+to the number of edges in the graph (or number of paths to be checked). For this reason, 
+a for loop from 0 to num is used to extract the following lines and store them in the Graph
+object. A counter called gnum is used to keep track of the graph number. Then getline
+function is used to extract the following lines and store the result in a string called
+edges. Because of the way the input is passed, edges[0] represents the source, and edges[2]
+represents the destination (stored as src and dst strings, respectively). These variables
+are then stored in the Graph object. Next, the program checks whether its done receiveing
+input for a given graph (i.e. it received the graph edges and the paths to be checked, or
+gnum % 2 = 1). If that is the case, the bft function is then used to do a breadth-first
+traversal of the graph and determine whether the given paths exist or not.
+  The bft function takes as arguments the graph (the actual graph and not the graph that
+stores the paths to be checked), the src and dst strings (which represent the path to be
+checked), the visited map (maps each string in the graph to a boolean value, initially
+set to false) and the graph number (computed using the gnum counter). This function works
+by using a queue of strings (named q) to process the nodes of the graph in a breadth-first
+order. The first element pushed into q is the src string. Since the value of src is
+modified later in the function, its original value is stored in a string called src_org
+(this is done for outputting purposes). The function runs until q is empty. At each
+iteration of the while loop, src is updated to the front value of q, and this value is
+popped from the queue. Then, the function checks whether or not this given value of src 
+has been visited on the graph or not. This is done by using the visited map. If the node 
+has already been visited, the function skips the current iteration and the next value 
+in the queue is checked (src is set to q.front()). If the node hasn't been visited yet,
+the value corresponding to the node (i.e. src) is set to true in the visited map. Next, 
+the function loops through the vector corresponding to node in the graph (this is done
+using an iterator). All the values in the vector (i.e. the nodes connected to the node
+currently being analyzed) are pushed into the queue. The function also checks whether
+any of these nodes in the vector is equal to dst (meaning, a path has been found). If
+that is the case, the function outputs a message, sets the path variable equal to true
+and returns. If that is not the case, the function continues searching for a path by 
+updating the value of src to the value of the next node in the queue (a neighbor of the
+original node). If the function loops through the whole graph (i.e. q is empty) and
+the wanted path hasn't been found (i.e path = fales), the appropriate message is 
+displayed. 
+  To check for the program's correctness, the provided tests were used. The program 
+passes the output, memory and time tests.
