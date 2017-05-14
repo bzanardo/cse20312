@@ -1,0 +1,111 @@
+Maria Beatriz Zanardo
+Lab 4 Report
+
+  To use the program, the user has to input a puzzle (text file) 
+in the command line. (e.g: sudoku puzzle.txt). After inputing the
+puzzle, the program will solve and display the solution.
+  From the programmer's perspective, the program works by using a
+Puzzle class which stores the sudoku board. This is done through
+a 9x9 int array (private), which is initialized in the constructor as
+an 9x9 array of 0s (representing blank spaces). This class has a 
+member function called getNum which returns the integer in a given 
+position at the array. There is also a print function which loops 
+through the array and outputs every integer. Lastly, there's the 
+addNum function which inputs an integer in a given position in the 
+array.
+  In the main function, a puzzle text file (which is passed to the 
+program in the command line) is processed and added to a Puzzle 
+object. This is done by using the argv command to extract the file
+name from the command line and using ifs.open to open the file.
+Then, using getline, each line of the file is extracted and stored
+as a string called numline. Next, the stringstream function is used
+to create an object called ss. Then, then each individual number in
+each single line  is extracted using (getline with space as a 
+delimiter) and stored in a string called numstring. Next, numstring
+is converted to an integer (using the stoi function) and stored in
+a vector of integers called vnum (using push back). Then, an iterator
+is used to parse through vnum and two for loops are used to enumerate
+the rows and columns. Using the addNum member function, each number 
+in the vnum vector is added to the correct position in a Puzzle 
+board. 
+  To find the solution for the Sudoku puzzle, a three-dimensional
+array of ints is used. In this array (called solutionArr) the first
+two dimensions correspond to the row and column numbers of the Puzzle
+board. The third dimension corresponds to the possible values that
+could be placed at the given position in the Puzzle board. A value of
+0 means that the number corresponding to the given positon in the
+array can't be placed in the board (whereas a 1 means that that value
+is still a possibility). As for example, if for if there is a 1 in
+the solutionArr[1][1][7] and that is the only non-zero value in the
+third dimension of the solutionArr for that given position (1,1) it
+means that a 8 (since array indexing starts at zero) should be place
+in the (1,1) position of the Puzzle board. 
+  To solve the Sudoku puzzle, a series of functions are used. First,
+a function called setPossibleValue is used. This function loops 
+through all the elements of the Puzzle board (using two for loops) 
+and sets a variable (called value) equal to the value of the given
+postion in the Puzzle board. If the value is not 0 (i.e. the cell
+is already filled), a for loop is used to go through the third
+dimension of the solutions array set all values at that given 
+position equal to 0 (i.e. no values are possible and the cell is 
+filled). Another for loop is used to loop through all the other cells
+in the same row and column and to set their value in the third 
+dimension of the solutions array to zero.
+  The setGrids function serves a similar pupose, but instead of 
+checking off the values of the cells in the same rows and columns, 
+it checks off for the cells in the same subgrid as well. This is done
+by using two for loops that go from 0 to 9 in increments of 3. This
+way, the first cell of each grid is indexed (upper, left corner).
+Next, two other for loops are used to loop through the other cells
+in the grid and each value is stored in a variable. If that value
+is not equal to zero (cell is filled), that value is checked off for
+all the other cells in the grid (value is set to zero in the solutions
+array).
+  After implementing the previous two functions, the check function is
+used to determine if for any of the cells, there is only one possible
+value. This is done by using two for loops to go through the solutions
+array. A third for loop is used to go through the third dimension of 
+the array and a counter is used to determine the number of non-zero
+integers. If this counter is equal to 1 (i.e. there only one 
+possibility) the corresponding value is added to the Puzzle board.
+  After using the previous function, a function called checkSingr is
+used to check if there are any "singletons" in the rows of the Puzzle
+board. This is done by using a for loop to loop through all the
+possible values (0-8, as indexed in the solutions array) and two
+other for loops to go through the rows and columns of the array. A
+couter is used to determine in how many positions a given number can
+be placed in a row. This counter is set to zero after going through
+a full row. For each value in a row, the function determines whether
+the cell is arleady filled in or not (using the getNum function). If
+the cell isn't filled (0), the function checks if the current value
+being checked is still a possibility for that cell (i.e. if the given
+value of p is set to zero or not in the third dimension of the solutions
+array). If that value is still posible, the counter is incremented. 
+After going through the full row, if the counter is equal to zero (i.e
+the value is only possible at a single cell of the row), that cell is
+set to that value. The variables r and c are used to store the row and
+column number of the cell that in which the value is still possible.
+After each interation through a row, the setPossibleValues function
+is called to update the solutions array.
+  The checkSingc function works exactly the same as the checkSingr 
+function, but instead of checking for singletons in each row, it does
+so for each column. This is done through the same process, but the for
+loop that goes through each row is nested inside the for loop that goes 
+through each column (and not the other way around, as in the checkSingc
+function). Moreover, the counter is set to zero after going through each
+column, whereas in the previous function it was set to zero after looping
+through each row.   
+  All the functions used to solve the Sudoku puzzle are placed in a
+while loop that runs until the puzzle is completely solved. To 
+determine if the puzzle is solved, a function called done is used. 
+This function works by looping through the Puzzle board and checking
+if there are any zeros. If there are no zeros, the function returns 
+true.
+  To verify the program, the sudoku puzzles were inputed in a website 
+that solved them. The solutions were then compared to the solutions
+obtained through the program.   
+  In general, I believe that the program worked well. Although using
+a simple Puzzle class and a 3-dimensinal array for solutions made the
+implementation simple, it made the process of analyzing each individual
+cell harder. Specifically, it made it harder to group cells into rows,
+columns and subgrids.

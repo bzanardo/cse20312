@@ -1,0 +1,75 @@
+Maria Beatriz Zanardo
+Lab 2 Report
+
+  From the user's perspective. the game starts off by dealing the
+first cards to the player and the dealer. The sum of each player's
+cards is displayed and updated every time a new card is dealt. After
+the cards have been dealt, the player is asked if he or she wants to
+hit or stand. The dealer decides whether to hit or stand 
+automatically. The game displays who won the round and the current
+score. The user can then decide to start a new round (by entering c)
+or to quit the game (by entering q). The game can be quit at any 
+moment by pressing q.
+  From the programmer's perspective, the game uses a class called 
+CardDeck which consists of an array of ints. This class uses a 
+non-default constructor that receives a value n which represents
+the size of the array (The constructor uses n = 52 as a fall back
+value). The array is filled with integers 0 to n-1. This class has
+as a member function the getSize function, which returns the size of
+the array. The class also has a private function to "shuffle" the 
+cards (called shuffle() ). This function works by using a for loop 
+to go through the whole array and swap every element with another 
+element in the array. To determine which element to swap with, srand and rand are used to generate a random number between 0 and the 
+size of the array minus one. The shuffle function is called in the 
+constructor, so that every time that a new deck is created, it is 
+shuffled.
+  The CardDeck class also has the Deal member function which is 
+responsible for dealing the cards to each player. This function works
+by taking the first element of the array, interpreting it as a card,
+returning its value (according to the rule fo the black jack) and 
+diminishing the size of the array by one (as if to simulate that the
+card has been discarded from the deck). To interpret the array 
+elements as cards, their value % 13 are computed, and a zero is 
+interpreted as an ace (value of 11 is returned), a 10 as a jack 
+(value of 10), a 11 as a queen (value of 10), a 12 as a king (value
+of 10) and the remaining numbers (1-9) as one more than their 
+value (2-10). Since the size variable is decreased everytime this 
+function is called, it always takes the element corresponding to 
+52 - size. This way, the function goes through the whole array in
+order and doesn't repeat the same card.
+  In the main program, a CardDeck object is declared. The program
+runs under a while loop that runs until the user enters 'q'. Using
+the Deal() function, two cards are given to the player, and two to
+the dealer. The sum of each player's pair of cards are displayed.
+A boolean variable called win is used to determine when the round
+is over (i.e. when someone wins, win = true and a new round begins).
+While the dealer's sum is less than 17, the dealer hits (a new card
+is dealt and its value added to the sum). After the dealer hits, the
+conditions of the game are checked (if dealer's sum is equal to 21,
+he wins, if its over 21, the player wins). After the dealer hitting
+(or not), the player is prompted whether to hit or stand. If the
+option 'h' is entered, a new card is dealt to the player, and its
+value added to the player's sum. Likewise, after the player deciding
+to hit, the conditions of the game are checked to see if there's
+a winner. If the player decides to stand (option 's') and the dealer
+has also not decided to hit (dealer > 17), the program checks for a
+winner by comparing the sum of the dealer's and the player's cards.
+Since it is previously checked if the sums go over 21, the winner is
+simply determined by whoever has the highest sum. A counter for the 
+number of wins is then incremented (one counter for the dealer, the
+other for the player). It is also checked if there is a tie, in which
+case neither of the counters are incremented. The win variable is 
+then set to true and a new round starts. Before starting a new 
+round, the score is displayed, and the user is prompted to choose 
+whether to quit or keep playing. If the player chooses to start a new
+round, the win variable is reset to false, and the player and dealer
+sums are set to zero.
+  To verify if the program runs correctly, the blackjack game was 
+played several times. It was checked all possible errors, such as
+mistakes in adding the cards, failure to execute some command (such
+as hit, stand or quit) and failure to determine the correct winner.
+Through all tests, the game behaved as expected and no errors were
+found.
+ 
+ 
+  

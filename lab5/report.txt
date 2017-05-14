@@ -1,0 +1,85 @@
+Maria Beatriz Zanardo
+Lab 5 Report
+
+  From the user's perspective, the program works by inputting a 
+series of binary trees, and the program determines whether the tree
+is a binary search tree or not. Each tree should be inputed in a 
+single line, with the first number being the number of nodes in the
+tree. The program receives input until the user enters ctrl-d.
+  From the programmer's perspective, the program uses the getline
+method to store each tree (line) in a string. Next, a stringstream
+obejct, which takes as an argument the string, is declared. The 
+getline method is again used (using space as a delimeter) to parse
+through the stringstream and save each individual number in a line
+in a string (treestr). Then, using the stoi method, each number is
+converted to an integer. A counter (s) is used to identify the
+first number of each tree (i.e the number of nodes in that given 
+tree). This first number is then added to a vector called nodeCount.
+All other numbers in the tree are added to an array of 15 vectors 
+called vtree. The number 15 was chosen arbitrarily as the maximum
+number of trees that will be passed to the program at a single run.
+A variable row is used to index the rows of the array and to add
+each individual tree to a different row (and consequently a different
+vector). This variable is incremented after the getline method has
+been used to parse through an entire line. All these previously
+mentined functions are in a while loop that runs until cin.eof is
+true. This means that the program accepts input until the user enters
+ctrl-d.
+  After receiving the user's input and setting up the vtree array of
+vectors, a function called check (which takes as input a vector of
+ints and the total number of nodes for the given tree) is used to 
+determine if each tree is a bst or not. This function makes use of 
+two different algorithms. First, determines if for every node, its 
+left child has a smaller or equal value and its right child has a 
+greater value. The function also determines if a node is part of the
+left or right subtree (variable called subtree is equal to 0 for 
+left, and 1 for right). If the node is part of the left subtree, the
+function checks if it value is less than the root. If the node its 
+part of the right subtree, the function checks if its value is 
+greater than the root.
+  These algorithms are implemented by parsing through each vector 
+using a for loop that goes from zero to max (the total number of
+nodes in each tree, taken from the nodeCount vector). For each node,
+a variable called num is set to be equal to its left child (indexed 
+by 2*(node number)+1). Note that before setting num equal to the left
+child, it is checked if that node is still in the range of the vector
+(i.e. 2*i+1 < max). If this is the case, the function breaks from 
+the for loop, as it means that all nodes and their childs have been 
+checked. After setting the variable num equal to the left child, the
+function determines if this node is part of the left or right subtree
+(explained in more detail later). Then, the function checks if the
+num variable is greater than its parent (tree[i]). If this condition
+is satisfied, the function displays that the tree is not bst and 
+returns false. If this is not the case, the function checks if the
+node satisfies the subtree property (right subtree always greater 
+than root, while left is always smaller). Likewise, if the node fails
+this condition the function returns false. Next, the function checks
+the right child of the ith node. The process is the exact same as the
+left node, but the right node is indexed as 2*i+2 and it is checked
+whether num is smaller than its parent node. Again, if num fails
+one of the two properties checked (being greater than its parent
+and satisfying its subtree property), the function returns false. If
+the function runs through the entire for loop (without quiting and 
+returning false), it displays a message that the function is a bst
+and returns true.
+  To determine in which subtree each node is in, two counters named 
+subtreesNum and j were used. The subtreesNum counter was set based
+on the number of nodes there were at each subtree at a given row of 
+the tree. As for instance, the program starts at the root node 
+(row = 0). For this row, there is one node in each subtree. So,
+subtreesNum is calculated by taking 2^j where j is 0. For each child
+checked, the subtreesNum counter is decreased, until it reaches the
+the min value. The min value is simply the negative of the initial
+subtreesNum value (in the case of the first node, it is -1). When
+subtreesNum is equal to the min value, the j counter is increase and
+new subtreesNum and min values are calculated. If the value of 
+subtreesNum is larger than zero, than the node being analyzed is in
+the left subtree. This is indicated by setting the variable subtree
+equal to 0. If subtreesNum is less than zero, the node is in the
+right subtree and the subtree variable is set to 1. 
+  To check if the program works correctly, several trees were tested.
+The program managed to correctly determine whether all the trees 
+tested were bst or not.Furthermore, the program was also tested using
+ the memory and timing tests provided by the instructors.   
+  
+

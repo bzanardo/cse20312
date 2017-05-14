@@ -1,0 +1,52 @@
+Maria Beatriz Zanardo
+Lab 7 Report
+
+  From the user's perspective, the program works by accepting input
+in the format, "name rank suit", until the user enters a -1. After 
+accepting the input, the program sorts the cards and outputs the
+names of the corresponding cardholders in decreasing order.
+  From the programmer's perspective, the program starts by using
+the getline function to extract the first line of standard input. 
+This line is stored in the num variable (this variable actually 
+doesn't have any use). The program then goes into an infinite while 
+loop, which only breaks if the user enters "-1". To read std input 
+in each iteration of the while loop, the program again uses the 
+getline function (output stored in the line variable). Using the 
+stringstream function, line is then converted into a stream 
+(called ss). Using the getline function and space as a delimeter, 
+the name of each cardholder is then extracted (stored in a string 
+called 'name'). The same process is used to extract the rank and the
+suit, but for suit, a newline is used as the delimeter of the 
+getline function. A function called rank_convert is then used to 
+convert the rank from a string to an integer. This function works by
+converting J to 11, Q to 12, and so on, or by using the stoi function
+ to convert the number cards to integers. The suit_num function is 
+also used to convert the suit to an integer. This function works by 
+giving a number to each suit based on their rank (i.e. spades = 3, 
+hearts = 2, and so on).
+  After these conversions, the name (string), rank (int) and suit
+(int) are added to a vector of structs called cards (the cards struct
+simply stores the name, rank and suit). The count variable is used
+to keep track of each line (i.e. each cardholder and their
+corresponding card) and is incremented after each iteration of the 
+while loop.
+  Whenever the line variable is a single number (line.length = 1),
+meaning the end of a block of input, the sort function is used to
+sort the cards and the display function is used to display the names
+of the cardholders in the correct order. The sort function works
+by using the rank_sort function. The rank_sort function, which takes
+two cards and returns a boolean, first checks whether the cards'
+ranks are the same. If this is not the case, the function returns 
+whether the first card's rank is greater than the second's. If the 
+two ranks are the same, the function returns whether the first card 
+has a higher suit than the second.
+  The display function works by taking the vector of cards (called a)
+and the count variable. The function iterates through the vector
+(from 0 to count-1) and outputs the name variable followed by a 
+comma. The last name is outputted outside the for loop so that it is
+followed by a newline and not a comma.
+  After using the sort and display functions, the count variable is
+set to zero and the vector of cards is cleared (using the clear 
+function) so that the following block of input can be sorted. These
+two function are also called whenever line is equal to -1, so that 
+the final block of input can also be sorted and displayed.

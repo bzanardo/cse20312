@@ -1,0 +1,72 @@
+Lab 1 Report
+Maria Beatriz Zanardo
+
+  From the user's perspective, the program starts off by displaying
+the Connect 4 board (with column numbers) and prompting the first 
+player to enter the number of the column he or she wishes to place
+the first disc. The updated board is then displayed with the disc
+positioned at the bottom row of the column chosen by player 1 (disc
+is represented as a 'O'). Player 2 is then prompted to choose a 
+column to place his or her disc (represented by a 'X'). The discs 
+are always positioned at the lowest availabe row at the chosen 
+column. The game continues until one of the players makes a line
+(either vertical, horizontal or diagonal) of four discs. The
+program then announces the winner and ends. The program can also
+be terminated by entering -1.
+  From the programmer's perspective, the program works by using two 
+different classes: C4Col and C4Board. The C4Col class represents
+each individual column and it stores as its private members the
+current number of discs, the maximum number of discs, and a char
+array representing the current state of the column. This class also
+includes a function to determine if the column is full (isFull), a
+function that returns what character is in a given position of the
+column (getDisc), a function that gives access to the maximum
+number of discs (getMaxDiscs) and a function to add a disc to a
+column (addDisc).
+  The C4Board class uses the C4Col class to represent the full
+board. It has a private attributes the number of columns in the 
+board, an array of 7 C4Col columns, and a private function called
+check. This class also has the member functions play() and display().
+The display function works by using two for loops to display each
+element of the board. This function loops through the seven columns
+and uses the getDisc function to display every element of each 
+column. The play function simulates the full game. This function 
+starts off by displaying general instructions (how to quit the game) 
+and displaying the board (using the display function). The rest of 
+the function works under a while loop that runs until the user enters
+-1. 
+  The function alternates prompting player 1 and 2 to choose a 
+column. This is done through an integer variable (called i) which is
+incremented every time a player places a disc. If the remainder of
+i divided by 2 plus 1 is equal to one (i%2 + 1), player 1 is prompted
+to play and a 'O' is passed to the addDisc function (at the column
+chosen by the player and stored in the col variable). If the result 
+of the previously mentioned operation is not 1, player 2 is prompted
+to and an 'X' is passed to the addDisc funtion instead. Before 
+actually adding the disc, the program checks if the chosen column is
+full (by using the isFull function). The program also checks if the
+user has chosen and invalid column number and displays an appropriate
+error message is that is the case. 
+  After each play, the private function check() is used to check if 
+a player has won. This function, which takes as an input a char and
+return a boolean, works by looping through every element of the board
+and comparing it to the char passed to the function (i.e. when player
+1 has just finished a play, 'O' is passed to the function, whereas 
+when player 2 has just played, 'X' is passed to the function). For 
+each element in the array, the function goes through four different
+for loops which check the vertical, horizontal and diagonals 
+directions, respectively, to see if there are four of the same given
+char in a line. This is done through a counter, which is 
+incremented if the element matches the given char, and set equal to
+zero if it doesn't. If the counter reaches to 4, the game announces
+the winner and the function returns a false value. This causes the
+play() function to stop and the game to finish. (if the check 
+function returns false, the play() function breaks out of the while
+loop)
+  The program was verified by playing the game and seeing if all the
+rules are followed properly (i.e. discs are added in the correct 
+position, invalid inputs receive appropriate error messages, the game
+can correctly determine the winner, etc.).
+  A deconstructor is necessary for the program to have dynamic memory
+management. It is necessary, as it frees space when the objects go
+out of range and are no longer needed in the program.
