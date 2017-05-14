@@ -1,0 +1,69 @@
+Maria Beatriz Zanardo
+Lab 10 Report
+
+  From the user's perspective, the program takes input in the form:
+NVERTICES
+-1 -1 ...
+-1 -1 ...
+
+where NVERTICES is the number of vertices in the graph and a -1 is used
+to denote that an edge between the two respective vertices doesn't exist.
+The program accepts input until EOF (ctrl-d) and then outputs the total
+weight and the edges that compose the minimum spanning tree.
+  From the programmer's perspective, the program uses the getline function
+to continuously (until eof) take input from cin and store it in a 3D array,
+(called graphs) where the first dimension represents the graph number, (it
+is assumed that no more than 10 graphs will be passed to the program at a
+time), and the other two dimensions represent the vertices of the graph
+(A-Z). The graph object is initiallized to zero before receiving input.
+In order to correctly store the input in the graphs array, the program
+first uses getline to extract the first number (i.e. the number of vertices)
+and store it in the variable num. Then, a for loop that runs from zero to
+num is used to extract the lines of the given graph (rows). Another for
+loop (that also runs from 0 to num) is used to extract each individual number.
+This is done using the stringstream function to transform the given row into
+a stream, and the getline function (with space as a delimeter) to extract
+each number. The stoi function is also used to convert the number from strings
+to integers. Each int is then stored in its appropriate position in the graphs
+array. A counter called gnum is also used to keep track of the graph number.
+  Once the program is done accepting input, a function called prims is used to 
+calculate the minimum spanning tree of each graph. This function works by 
+using a map (key and value are chars) called marked and a priority queue of
+edge objects called frontier. The edge object is simply a struct that stores
+the name of an edge (char), the previous vertex (char) and the corresponding
+value (int). In order for this object to be used in the priority queue, it
+contains a boolean operator function that returns the edge with the smallest
+value. This way, the frontier priority queue orders the edges by value and
+returns the edge with the smallest value.
+  The prims function starts off by designating an initial edge (called start),
+which is arbitrarily chosen to be AA (with a value of zero). This edge is
+pushed into the frontier queue, and the program starts a while loop that runs
+while frontier is not empty. An edge called v is set to be equal to the top
+edge of frontier (in the first iteration that is the start edge) and that
+edge is then popped from frontier. The function then checks whether that given
+vertex (i.e. v.name) is already in the marked map, meaning it has already been
+processed. If that is the case, the function skips that value and continues.
+If that is not the case, that given edge is added to the marked map (where
+the name is the key and prev is the value) and the value of the edge is added
+to a counter called sum. Next, all the neighbors of that given node (v.name)
+are added to frontier. This is done using another function called push_neighbors.
+  The push_neighbors function works by iterating through the column corresponding
+to the given vertex in the graphs array (this is done until the program encounters
+a 0, meaning there are no more vertices in the graph). If the value at a given 
+position in the column is not -1 (or 0), it means there exist an edge and a 
+neighbor has been found. The function then assigns the information about the
+neighbor to an edge called neighbor (where the row is the name, the original
+vertex passed to the function is the prev and the value is the value in the matrix).
+The edge neighbor is then pushed into frontier.
+  Using the push_neighbors function, the prims function is then able to find 
+the minimum spanning tree and the total weight of the tree (sum) is outputted.
+In order to output the edges in the correct format, the function uses a multimap 
+called ordered (where the key and value are chars). The function iterates through 
+the marked map and determines if a given edge is in alphabetical order 
+(i.e. key < value). If that is the case, the edge is inserted in the ordered map. 
+If that is not the case, the edge is inserted in the ordered map in an inverted order 
+(i.e the value is inserted as the key and vice-versa). Then, the function iterates 
+through the ordered map and outputs its contents.
+  To check for the program's correctness, the tests provided were used. Since the
+program passed the output, memory and time tests, it is assumed that it can correctly
+determine the minimum spanning tree. 
